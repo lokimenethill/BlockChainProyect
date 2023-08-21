@@ -7,7 +7,20 @@ var port = process.env.PORT
 var axios = require('axios');
 var fs = require('fs'),
     path = require('path');
-
+var ping = require('ping');
+/*
+var exec = require('child_process').exec;
+exec("ping -c 3 192.168.129.98", function (err, stdout, stderr) {
+    console.log(stdout);
+});
+*/
+var hosts = ['192.168.1.1', 'google.com', 'yahoo.com'];
+hosts.forEach(function(host){
+    ping.sys.probe(host, function(isAlive){
+        var msg = isAlive ? 'host ' + host + ' is alive' : 'host ' + host + ' is dead';
+        console.log(msg);
+    });
+});
 //console.log("---->",process.env.IP)
 app.use(cors())
 app.use(express.json());
@@ -17,9 +30,11 @@ app.use(express.urlencoded({ extended: true }));
 console.log("-----------> Conectando Blockchain")
 
 
+var segmentSuccess = []
+
 //axios.get('192.168.129.123/test/');
-/*
-axios.get('http://192.168.129.123:10109/test/').then(function (response) {
+
+axios.get('http://192.168.129.123:10109/test?id=19999').then(function (response) {
     // handle success
     console.log(response);
   })
@@ -31,7 +46,7 @@ axios.get('http://192.168.129.123:10109/test/').then(function (response) {
     // always executed
   });
 
-*/
+
 
 app.get("/", function(req, res) {
     
