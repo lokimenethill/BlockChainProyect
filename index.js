@@ -23,6 +23,7 @@ try{
 }catch{
     console.log("No hay interfaz de red wifi")
 }
+realNodeIPLAN = process.env.REALLANIP
 console.log("----------------------->La direccion IP de este nodo es : "+ realNodeIPLAN)
 //console.log (networkInterfaces.enp8s0[0].address);
 //console.log (networkInterfaces.wlp115s0[0].address);
