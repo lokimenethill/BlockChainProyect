@@ -60,7 +60,9 @@ var n = i.toString()
 newURI = `http://${process.env.IP}${i}:${process.env.PORT}/addnode?id=${i}`
 //console.log(newURI)
 let actualIP = process.env.IP+i
-if(actualIP!=actualIP){//para que no se vea a asi mismo
+
+if(actualIP!=realNodeIPLAN){//para que no se vea a asi mismo
+    
 axios({
     url: newURI, //your url
       method: 'GET',
