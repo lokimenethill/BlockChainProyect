@@ -9,6 +9,23 @@ var fs = require('fs'),
     path = require('path');
 var ping = require('ping');
 
+//extraemos ips de la interfaz de internet mas comun wifi y ethernet de la maquina donde se ejecutara el nodo
+var os = require ('os');
+var realNodeIPLAN = "" 
+var networkInterfaces = os.networkInterfaces ();
+try{
+    realNodeIPLAN = networkInterfaces.enp8s0[0].address
+}catch{
+    console.log("no hay interfaz de red enthernet")
+}
+try{
+    realNodeIPLAN = networkInterfaces.wlp115s0[0].address
+}catch{
+    console.log("No hay interfaz de red wifi")
+}
+console.log("----------------------->La direccion IP de este nodo es : "+ realNodeIPLAN)
+//console.log (networkInterfaces.enp8s0[0].address);
+//console.log (networkInterfaces.wlp115s0[0].address);
 /*
 var exec = require('child_process').exec;
 exec("ifconfig | grep inet", function (err, stdout, stderr) {
@@ -39,9 +56,10 @@ for(let i = 1; i < 256;i++){
 setTimeout(() => {
     var newURI = ''
 var n = i.toString()
-newURI = `http://${process.env.IP}${i}:${process.env.PORT}/test?id=${i}`
+newURI = `http://${process.env.IP}${i}:${process.env.PORT}/addnode?id=${i}`
 //console.log(newURI)
-
+let actualIP = process.env.IP+i
+if(actualIP!=actualIP){//para que no se vea a asi mismo
 axios({
     url: newURI, //your url
       method: 'GET',
@@ -50,11 +68,12 @@ axios({
                     },
                         //responseType: 'json', // important
                         }).then(response => 
-                          console.log(response.primero)
+                          console.log(response.data.blockchain)
                           ).catch(function (error) {
                             // handle error
                             //console.log("No hay nodo en ip: "+ process.env.IP+i+":"+process.env.PORT)
                           })
+                        }
 /*  
     axios.get(newURI).then(function (response) {
         // handle success
@@ -71,10 +90,11 @@ axios({
       });
 */
 }, "1000");
+
 }
 console.log("----> Nodo añadido correctamente a la red!!!")
 setTimeout(()=>{
-console.log("*******>"+successBlock[0])    
+//console.log("*******>"+successBlock[0])    
 },10000)
 
 app.get("/", function(req, res) {
@@ -90,21 +110,27 @@ app.get("/test", function(req, res) {
     
     //recibimos parametros de sesion    
     let id = req.query.id
-
-    
-    
     console.log(id);
-    res.json({primero:"fkmdlf"})
+
     });
 
 app.get("/addnode", function(req, res) {
-
-    //recibimos parametros de sesion    
-    let id = req.query.id
+        let id = req.query.id
+        console.log("di:"+id);
+        //extraemos el nombre de todos los archivos 
+        const files = fs.readdirSync('PythonCodes/blockchain') 
+        files.pop()//eliminamos el ultimo elemento que pertenece al hash el arreglo calculado por openssl
+        console.log(files)
+        //leemos los todos los archivos json y los almacenamos en una arreglo de objetos json
+        dat = []
+        for(var i = 0; i < files.length;i++){
+            let a = fs.readFileSync('PythonCodes/blockchain/'+files[i])
+            let b = JSON.parse(a)
+            //console.log(b)
+            dat.push( b )
+        }
     
-    
-    
-    console.log("nodo encontrado y añadido"+id);
+        res.json({blockchain:dat})
     });
 
 app.listen(port, function() {
