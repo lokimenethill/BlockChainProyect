@@ -70,9 +70,15 @@ axios({
               //a:"",
                     },
                         //responseType: 'json', // important
-                        }).then(response => 
-                          console.log(response.data.blockchain)
-                          ).catch(function (error) {
+                        }).then(response => {
+                          //console.log(response.data.blockchain)
+                          let lenDat = response.data.blockchain.length;
+                          for(let i = 0 ; i<lenDat;i++){
+                            console.log(response.data.blockchain[i])
+                            fs.writeFileSync('PythonCodes/blockchain/'+i+'.json',  JSON.stringify(response.data.blockchain[i],null, 2));
+                          }
+                          
+                         } ).catch(function (error) {
                             // handle error
                             //console.log("No hay nodo en ip: "+ process.env.IP+i+":"+process.env.PORT)
                           })
