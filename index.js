@@ -139,7 +139,26 @@ app.get("/addnode", function(req, res) {
             //console.log(b)
             dat.push( b )
         }
-        
+        let w = fs.readFileSync('PythonCodes/blockchain/wallets.json')
+        let wp = JSON.parse(w)
+        res.json({blockchain:dat,wallets:wp})
+    });
+
+    app.get("/addblock", function(req, res) {
+        let id = req.query.id
+        console.log("di:"+id);
+        //extraemos el nombre de todos los archivos 
+        const files = fs.readdirSync('PythonCodes/blockchain') 
+        files.pop()//eliminamos el ultimo elemento que pertenece al hash el arreglo calculado por openssl
+        console.log(files)
+        //leemos los todos los archivos json y los almacenamos en una arreglo de objetos json
+        dat = []
+        for(var i = 0; i < files.length;i++){
+            let a = fs.readFileSync('PythonCodes/blockchain/'+files[i])
+            let b = JSON.parse(a)
+            //console.log(b)
+            dat.push( b )
+        }
         res.json({blockchain:dat,wallets:"da"})
     });
 
@@ -147,10 +166,4 @@ app.listen(port, function() {
     console.log("Nodo Escuchando por el puerto : "+port);
     
   });
-
-  app.get("/addnode", function(req, res) {
-    let id = req.query.id
-    broadcast()
-
-});
 
