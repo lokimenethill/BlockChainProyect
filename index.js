@@ -139,7 +139,7 @@ app.get("/addnode", function(req, res) {
             //console.log(b)
             dat.push( b )
         }
-        let w = fs.readFileSync('PythonCodes/blockchain/wallets.json')
+        let w = fs.readFileSync('PythonCodes/wallets.json')
         let wp = JSON.parse(w)
         res.json({blockchain:dat,wallets:wp})
     });
