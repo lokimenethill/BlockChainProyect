@@ -47,7 +47,7 @@ app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
+function broadcast(){
 console.log("-----------> Conectando Blockchain")
 //axios.get('192.168.129.123/test/');
 var successBlock = []
@@ -99,8 +99,9 @@ axios({
       });
 */
 }, "1000");
-
 }
+}
+broadcast()
 console.log("----> Nodo añadido correctamente a la red!!!")
 setTimeout(()=>{
 //console.log("*******>"+successBlock[0])    
@@ -138,12 +139,18 @@ app.get("/addnode", function(req, res) {
             //console.log(b)
             dat.push( b )
         }
-    
-        res.json({blockchain:dat})
+        
+        res.json({blockchain:dat,wallets:"da"})
     });
 
 app.listen(port, function() {
     console.log("Nodo Escuchando por el puerto : "+port);
     
   });
+
+  app.get("/addnode", function(req, res) {
+    let id = req.query.id
+    broadcast()
+
+});
 
