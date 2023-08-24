@@ -8,8 +8,8 @@ var axios = require('axios');
 var fs = require('fs'),
     path = require('path');
 var ping = require('ping');
-const spawn = require("child_process").spawn;
-const pythonProcess = spawn('python',["PythonCodes/generaWallets.py"]);
+//const spawn = require("child_process").spawn;
+//const pythonProcess = spawn('python',["PythonCodes/generaWallets.py"]);
 //extraemos ips de la interfaz de internet mas comun wifi y ethernet de la maquina donde se ejecutara el nodo
 var os = require ('os');
 var realNodeIPLAN = "" 
@@ -82,7 +82,7 @@ axios({
                           for(let i = 0 ; i<lenDat;i++){
                             console.log(response.data.blockchain[i])
                             fs.writeFileSync('PythonCodes/blockchain/'+i+'.json',  JSON.stringify(response.data.blockchain[i],null, 2));
-                            //fs.writeFileSync('PythonCodes/wallets.json',  JSON.stringify(response.data.wallets,null, 2));
+                            fs.writeFileSync('PythonCodes/wallets.json',  JSON.stringify(response.data.wallets,null, 2));
                           }
                           
                          } ).catch(function (error) {

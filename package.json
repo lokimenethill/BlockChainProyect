@@ -4,7 +4,7 @@
   "description": "BlockChain para la materia de seguiridad CINVESTAV Dpto:Computacion Maestria en Ciencias de la Computacion",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js --ignore /PythonCodes/",
+    "start": "python3 PythonCodes/generaWallets.py && nodemon index.js --ignore /PythonCodes/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Balam y Christian",
