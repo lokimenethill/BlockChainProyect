@@ -46,8 +46,13 @@ hosts.forEach(function(host){
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+console.log("*********************> Creacion de wallet para el nodo")
+//
+
+//
 
 function broadcast(){
+
 console.log("-----------> Conectando Blockchain")
 //axios.get('192.168.129.123/test/');
 var successBlock = []
@@ -76,6 +81,7 @@ axios({
                           for(let i = 0 ; i<lenDat;i++){
                             console.log(response.data.blockchain[i])
                             fs.writeFileSync('PythonCodes/blockchain/'+i+'.json',  JSON.stringify(response.data.blockchain[i],null, 2));
+                            fs.writeFileSync('PythonCodes/wallets.json',  JSON.stringify(response.data.wallets,null, 2));
                           }
                           
                          } ).catch(function (error) {
@@ -123,6 +129,19 @@ app.get("/test", function(req, res) {
     console.log(id);
 
     });
+app.post("/sendWallet", function(req, res) {
+
+    //recibimos wallet de nuevo nodo
+    let wallet = req.body.wallet;
+
+    });
+app.get("/recibeWallet", function(req, res) {
+
+    //recibimos parametros de sesion    
+    let pk = req.query.pk
+    console.log(pk);
+
+    });
 
 app.get("/addnode", function(req, res) {
         let id = req.query.id
@@ -144,23 +163,23 @@ app.get("/addnode", function(req, res) {
         res.json({blockchain:dat,wallets:wp})
     });
 
-    app.get("/addblock", function(req, res) {
-        let id = req.query.id
-        console.log("di:"+id);
-        //extraemos el nombre de todos los archivos 
-        const files = fs.readdirSync('PythonCodes/blockchain') 
-        files.pop()//eliminamos el ultimo elemento que pertenece al hash el arreglo calculado por openssl
-        console.log(files)
-        //leemos los todos los archivos json y los almacenamos en una arreglo de objetos json
-        dat = []
-        for(var i = 0; i < files.length;i++){
-            let a = fs.readFileSync('PythonCodes/blockchain/'+files[i])
-            let b = JSON.parse(a)
-            //console.log(b)
-            dat.push( b )
-        }
-        res.json({blockchain:dat,wallets:"da"})
-    });
+app.get("/addblock", function(req, res) {
+    let id = req.query.id
+    console.log("di:"+id);
+    //extraemos el nombre de todos los archivos 
+    const files = fs.readdirSync('PythonCodes/blockchain') 
+    files.pop()//eliminamos el ultimo elemento que pertenece al hash el arreglo calculado por openssl
+    console.log(files)
+    //leemos los todos los archivos json y los almacenamos en una arreglo de objetos json
+    dat = []
+    for(var i = 0; i < files.length;i++){
+        let a = fs.readFileSync('PythonCodes/blockchain/'+files[i])
+        let b = JSON.parse(a)
+        //console.log(b)
+        dat.push( b )
+    }
+    res.json({blockchain:dat,wallets:"da"})
+});
 
 app.listen(port, function() {
     console.log("Nodo Escuchando por el puerto : "+port);
