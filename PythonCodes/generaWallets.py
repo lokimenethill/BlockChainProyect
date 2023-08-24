@@ -17,5 +17,5 @@ def genera_llaves():
         time.sleep(1)
     '''
 genera_llaves()
-URL = f'http://192.168.2.123/recibeWallet?pk=dasd'
-requests.get(URL)
+URL = f'http://192.168.129.123:10109/recibeWallet?pk=dasd'
+res = requests.get(URL,timeout=0.500)

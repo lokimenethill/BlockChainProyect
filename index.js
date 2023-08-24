@@ -140,7 +140,7 @@ app.get("/recibeWallet", function(req, res) {
     //recibimos parametros de sesion    
     let pk = req.query.pk
     console.log(pk);
-
+    res.send("hola")
     });
 
 app.get("/addnode", function(req, res) {
