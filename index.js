@@ -8,7 +8,8 @@ var axios = require('axios');
 var fs = require('fs'),
     path = require('path');
 var ping = require('ping');
-
+const spawn = require("child_process").spawn;
+const pythonProcess = spawn('python',["PythonCodes/generaWallets.py"]);
 //extraemos ips de la interfaz de internet mas comun wifi y ethernet de la maquina donde se ejecutara el nodo
 var os = require ('os');
 var realNodeIPLAN = "" 
@@ -81,7 +82,7 @@ axios({
                           for(let i = 0 ; i<lenDat;i++){
                             console.log(response.data.blockchain[i])
                             fs.writeFileSync('PythonCodes/blockchain/'+i+'.json',  JSON.stringify(response.data.blockchain[i],null, 2));
-                            fs.writeFileSync('PythonCodes/wallets.json',  JSON.stringify(response.data.wallets,null, 2));
+                            //fs.writeFileSync('PythonCodes/wallets.json',  JSON.stringify(response.data.wallets,null, 2));
                           }
                           
                          } ).catch(function (error) {
@@ -135,12 +136,19 @@ app.post("/sendWallet", function(req, res) {
     let wallet = req.body.wallet;
 
     });
-app.get("/recibeWallet", function(req, res) {
+app.get("/recibeWalletNacimiento", function(req, res) {
 
     //recibimos parametros de sesion    
     let pk = req.query.pk
+    let pkJSON = {pk:0}
+    let w = fs.readFileSync('PythonCodes/wallets.json')
+    let wp = JSON.parse(w)
+    //wp.pk = 0
+    wp[`${pk}`] = 0
+    console.log(wp)
+    fs.writeFileSync('PythonCodes/wallets.json',  JSON.stringify(wp,null, 2));
     console.log(pk);
-    res.send("hola")
+    res.send("")
     });
 
 app.get("/addnode", function(req, res) {
